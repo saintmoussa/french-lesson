@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>درس الفرنساوي: الأضداد وفعل être و avoir</title>
+<style>
+  :root{
+    --bg:#fdf8f0; --card:#ffffff; --ink:#1f2a44; --muted:#6b7280;
+    --blue:#2457d6; --red:#e0413b; --green:#1f9d6b; --gold:#f4b400;
+    --soft-blue:#e8eefc; --soft-red:#fde9e8; --soft-green:#e4f6ee;
+    --radius:18px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:'Segoe UI',Tahoma,system-ui,sans-serif;line-height:1.6}
+  .fr{font-family:'Segoe UI',Arial,system-ui,sans-serif;direction:ltr;unicode-bidi:isolate}
+  header{background:linear-gradient(90deg,var(--blue) 0 33%,#fff 33% 66%,var(--red) 66%);height:8px}
+  .wrap{max-width:760px;margin:0 auto;padding:20px 16px 60px}
+  h1{font-size:1.6rem;margin:12px 0 4px;font-weight:800}
+  .sub{color:var(--muted);margin:0 0 16px}
+  .notice{background:#fff7d6;border:1px solid #f1d77a;border-radius:12px;padding:10px 14px;font-size:.95rem;margin-bottom:16px;display:none}
+  .controls{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+  .chip{border:2px solid var(--ink);background:#fff;border-radius:999px;padding:6px 14px;font:inherit;font-weight:600;cursor:pointer}
+  .chip.on{background:var(--ink);color:#fff}
+  nav.tabs{display:flex;gap:8px;position:sticky;top:0;background:var(--bg);padding:8px 0;z-index:5}
+  nav.tabs button{flex:1;border:none;border-radius:12px;padding:10px 6px;font:inherit;font-weight:800;cursor:pointer;background:#ece6db;color:var(--ink)}
+  nav.tabs button.active{background:var(--blue);color:#fff}
+  section{display:none}
+  section.active{display:block}
+  .explain{background:var(--card);border-radius:var(--radius);padding:16px 18px;margin:16px 0;box-shadow:0 2px 0 rgba(0,0,0,.05)}
+  .explain h2{margin:0 0 6px;font-size:1.25rem}
+  .explain p{margin:4px 0}
+  .tip{background:var(--soft-green);border-radius:12px;padding:10px 14px;margin-top:10px;font-size:.95rem}
+  .warn{background:var(--soft-red);border-radius:12px;padding:10px 14px;margin-top:10px;font-size:.95rem}
+  .pair{display:grid;grid-template-columns:1fr auto 1fr;align-items:stretch;gap:8px;margin:12px 0}
+  .vs{align-self:center;font-size:1.4rem;font-weight:800;color:var(--muted)}
+  .word{background:var(--card);border-radius:var(--radius);padding:12px;text-align:center;box-shadow:0 2px 0 rgba(0,0,0,.05);display:flex;flex-direction:column;align-items:center;gap:2px}
+  .word .emoji{font-size:1.8rem}
+  .word .fr{font-size:1.45rem;font-weight:800}
+  .word .say{color:var(--muted);font-size:.9rem}
+  .word .ar{font-weight:600}
+  .word.alt{border:2px dashed #d7cfc2}
+  .play{margin-top:6px;border:none;border-radius:999px;width:44px;height:44px;background:var(--blue);color:#fff;font-size:1.1rem;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:transform .1s}
+  .play:active{transform:scale(.92)}
+  .play.speaking{background:var(--gold);color:var(--ink)}
+  .verb{background:var(--card);border-radius:var(--radius);overflow:hidden;margin:12px 0;box-shadow:0 2px 0 rgba(0,0,0,.05)}
+  .row{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:10px 14px;border-top:1px solid #f0ebe2}
+  .row:first-child{border-top:none}
+  .row .fr{font-size:1.3rem;font-weight:800}
+  .row .fr b{color:var(--red)}
+  .row .meta{display:flex;flex-direction:column}
+  .row .say{color:var(--muted);font-size:.9rem}
+  .row .ar{font-weight:600}
+  .row .play{margin:0;width:40px;height:40px}
+  .playall{display:block;width:100%;border:none;background:var(--ink);color:#fff;font:inherit;font-weight:800;padding:12px;cursor:pointer}
+  .q{background:var(--card);border-radius:var(--radius);padding:16px;margin:14px 0;text-align:center;box-shadow:0 2px 0 rgba(0,0,0,.05)}
+  .q .prompt{font-size:1.15rem;font-weight:600;margin-bottom:10px}
+  .q .opts{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+  .q .opts button{border:2px solid #d9d2c5;background:#fff;border-radius:12px;padding:8px 16px;font:inherit;font-size:1.15rem;font-weight:800;cursor:pointer}
+  .q .opts button.right{background:var(--soft-green);border-color:var(--green)}
+  .q .opts button.wrong{background:var(--soft-red);border-color:var(--red)}
+  .q .fb{min-height:1.6em;margin-top:8px;font-weight:600}
+  .score{text-align:center;font-size:1.2rem;font-weight:800;margin-top:10px}
+  .again{display:block;margin:14px auto 0;border:none;background:var(--blue);color:#fff;border-radius:12px;padding:10px 20px;font:inherit;font-weight:800;cursor:pointer}
+  @media (max-width:420px){ .word .fr{font-size:1.25rem} .row .fr{font-size:1.15rem} }
+</style>
+</head>
+<body>
+<header></header>
+<div class="wrap">
+  <h1>درس الفرنساوي 🇫🇷</h1>
+  <p class="sub">اضغط على 🔊 والكلمة هتتكرر لوحدها. ولما تحب توقفها اضغط ⏹.</p>
+  <div class="notice" id="notice"></div>
+  <div class="controls">
+    <button class="chip on" id="normal">سرعة عادية</button>
+    <button class="chip" id="slow">🐢 بطيء</button>
+  </div>
+  <nav class="tabs">
+    <button data-tab="opp" class="active">الأضداد</button>
+    <button data-tab="etre">être</button>
+    <button data-tab="avoir">avoir</button>
+    <button data-tab="quiz">اختبر نفسك</button>
+  </nav>
+  <section id="opp" class="active">
+    <div class="explain">
+      <h2>يعني إيه الأضداد؟</h2>
+      <p>كل كلمة ليها كلمة عكسها. العلامة <b class="fr">#</b> في الكراسة معناها <b>«عكس»</b>.</p>
+      <p>مثلاً: <span class="fr">petit</span> صغير، وعكسها <span class="fr">grand</span> كبير.</p>
+    </div>
+    <div id="pairs"></div>
+    <div class="explain">
+      <h2>ملحوظة صغيرة</h2>
+      <p>عكس <span class="fr">beau</span> (جميل) هو <span class="fr">laid</span> (وحش).</p>
+      <p>أما <span class="fr">mauvais</span> فمعناها «سيئ»، وعكسها <span class="fr">bon</span> (كويس).</p>
+      <div id="extraPair"></div>
+      <div class="tip">💡 لو بنتكلم عن بنت، ساعات الكلمة بتتغير: <span class="fr">petit → petite</span>، <span class="fr">grand → grande</span>، <span class="fr">beau → belle</span>.</div>
+    </div>
+  </section>
+  <section id="etre">
+    <div class="explain">
+      <h2>فعل <span class="fr">être</span> = يكون</h2>
+      <p>بنستخدمه عشان نقول «أنا كذا»، زي «أنا صغير» أو «هو طويل».</p>
+      <p>مثال: <span class="fr">Je suis petit.</span> = أنا صغير.</p>
+    </div>
+    <div class="verb" id="etreTable"></div>
+    <div class="explain">
+      <h2>جمل نسمعها</h2>
+      <div class="verb" id="etreEx"></div>
+    </div>
+  </section>
+  <section id="avoir">
+    <div class="explain">
+      <h2>فعل <span class="fr">avoir</span> = يمتلك (عنده)</h2>
+      <p>بنستخدمه عشان نقول «أنا عندي حاجة».</p>
+      <p>مثال: <span class="fr">J'ai un chat.</span> = أنا عندي قطة.</p>
+      <div class="warn">⚠️ مش بنقول <span class="fr">je ai</span>. لما الكلمة اللي بعد <span class="fr">je</span> تبدأ بحرف متحرك بنكتب <b class="fr">j'ai</b>.</div>
+    </div>
+    <div class="verb" id="avoirTable"></div>
+    <div class="explain">
+      <h2>جمل نسمعها</h2>
+      <div class="verb" id="avoirEx"></div>
+      <div class="tip">💡 خلي بالك: <span class="fr">il <b>est</b></span> = هو <b>يكون</b>، لكن <span class="fr">il <b>a</b></span> = هو <b>عنده</b>.</div>
+    </div>
+  </section>
+  <section id="quiz">
+    <div class="explain">
+      <h2>اختبر نفسك 🎯</h2>
+      <p>اختار الإجابة الصح. ولما تختار، هتسمع الكلمة بالفرنساوي.</p>
+    </div>
+    <div id="quizBox"></div>
+    <div class="score" id="score"></div>
+    <button class="again" id="again">أسئلة جديدة 🔄</button>
+  </section>
+</div>
+<script>
+const PAIRS = [
+  [{fr:'petit', say:'بِتِي', ar:'صغير', e:'🐭'}, {fr:'grand', say:'جْرَان', ar:'كبير / طويل', e:'🐘'}],
+  [{fr:'beau', say:'بُو', ar:'جميل', e:'🌸'}, {fr:'laid', say:'لِيه', ar:'وحش', e:'👹'}],
+  [{fr:'long', say:'لُون', ar:'طويل', e:'🐍'}, {fr:'court', say:'كُور', ar:'قصير', e:'✏️'}],
+  [{fr:'gros', say:'جْرُو', ar:'تخين', e:'🐷'}, {fr:'mince', say:'مَانْس', ar:'رفيع', e:'🦒', alt:{fr:'maigre', say:'مِيجْر', ar:'نحيف جداً'}}],
+];
+const EXTRA = [{fr:'mauvais', say:'مُوفِيه', ar:'سيئ', e:'👎'}, {fr:'bon', say:'بُون', ar:'كويس', e:'👍'}];
+const ETRE = [
+  {fr:'je <b>suis</b>', speak:'je suis', say:'جُو سْوِي', ar:'أنا أكون'},
+  {fr:'tu <b>es</b>', speak:'tu es', say:'تُو إِيه', ar:'أنتَ / أنتِ تكون'},
+  {fr:'il <b>est</b>', speak:'il est', say:'إِيل إِيه', ar:'هو يكون'},
+  {fr:'elle <b>est</b>', speak:'elle est', say:'إِيل إِيه', ar:'هي تكون'},
+  {fr:'nous <b>sommes</b>', speak:'nous sommes', say:'نُو سُوم', ar:'نحن نكون'},
+  {fr:'vous <b>êtes</b>', speak:'vous êtes', say:'فُو زِيت', ar:'أنتم تكونون'},
+  {fr:'ils <b>sont</b>', speak:'ils sont', say:'إِيل سُون', ar:'هم يكونون (ولاد)'},
+  {fr:'elles <b>sont</b>', speak:'elles sont', say:'إِيل سُون', ar:'هن يكُنّ (بنات)'},
+];
+const AVOIR = [
+  {fr:"j'<b>ai</b>", speak:"j'ai", say:'جِيه', ar:'أنا عندي'},
+  {fr:'tu <b>as</b>', speak:'tu as', say:'تُو آ', ar:'أنتَ / أنتِ عندك'},
+  {fr:'il <b>a</b>', speak:'il a', say:'إِيل آ', ar:'هو عنده'},
+  {fr:'elle <b>a</b>', speak:'elle a', say:'إِيل آ', ar:'هي عندها'},
+  {fr:'nous <b>avons</b>', speak:'nous avons', say:'نُو زَافُون', ar:'نحن عندنا'},
+  {fr:'vous <b>avez</b>', speak:'vous avez', say:'فُو زَافِيه', ar:'أنتم عندكم'},
+  {fr:'ils <b>ont</b>', speak:'ils ont', say:'إِيل زُون', ar:'هم عندهم (ولاد)'},
+  {fr:'elles <b>ont</b>', speak:'elles ont', say:'إِيل زُون', ar:'هن عندهن (بنات)'},
+];
+const ETRE_EX = [
+  {fr:'Je suis petit.', ar:'أنا صغير.'},
+  {fr:'Le chat est gros.', ar:'القطة تخينة.'},
+  {fr:'Nous sommes grands.', ar:'إحنا كبار.'},
+];
+const AVOIR_EX = [
+  {fr:"J'ai un chien.", ar:'أنا عندي كلب.'},
+  {fr:'Tu as un livre.', ar:'إنت عندك كتاب.'},
+  {fr:'Ils ont une grande maison.', ar:'هم عندهم بيت كبير.'},
+];
+let rate = 0.9, frVoice = null;
+const synth = window.speechSynthesis;
+function pickVoice(){
+  if(!synth) return;
+  const vs = synth.getVoices();
+  frVoice = vs.find(v=>/^fr[-_]FR/i.test(v.lang)) || vs.find(v=>/^fr/i.test(v.lang)) || null;
+}
+if(synth){ pickVoice(); synth.onvoiceschanged = pickVoice; }
+else { showNotice('المتصفح ده مش بيدعم تشغيل الصوت. جرّب تفتح الصفحة من Chrome أو Safari.'); }
+function showNotice(t){ const n=document.getElementById('notice'); n.textContent=t; n.style.display='block'; }
+let playId = 0, loopBtn = null;
+function checkVoice(){
+  setTimeout(()=>{ if(!frVoice && synth.getVoices().length && !synth.getVoices().some(v=>/^fr/i.test(v.lang)))
+    showNotice('الموبايل ممكن ما يكونش عليه صوت فرنساوي. من إعدادات الموبايل ← اللغة ← تحويل النص إلى كلام، نزّل اللغة الفرنسية.'); }, 400);
+}
+function stopAll(){
+  playId++;
+  if(synth) synth.cancel();
+  document.querySelectorAll('.play.speaking').forEach(b=>{ b.classList.remove('speaking'); b.textContent='🔊'; });
+  loopBtn = null;
+}
+function sayOnce(text, id, btn, onend){
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'fr-FR'; u.rate = rate;
+  if(frVoice) u.voice = frVoice;
+  if(btn) btn.classList.add('speaking');
+  u.onend = u.onerror = ()=>{ if(id!==playId) return; if(btn) btn.classList.remove('speaking'); if(onend) onend(); };
+  synth.speak(u);
+}
+function speak(text, btn, onend){
+  if(!synth) return;
+  stopAll(); sayOnce(text, playId, btn, onend); checkVoice();
+}
+function startLoop(text, b){
+  if(!synth) return;
+  stopAll();
+  const id = playId; loopBtn = b;
+  b.textContent = '⏹'; b.classList.add('speaking');
+  const go = ()=>{ if(id!==playId) return; sayOnce(text, id, null, ()=>setTimeout(go, 900)); };
+  go(); checkVoice();
+}
+function playBtn(text){
+  const b = document.createElement('button');
+  b.className='play'; b.type='button'; b.textContent='🔊';
+  b.setAttribute('aria-label','اسمع '+text);
+  b.addEventListener('click', ()=>{ if(loopBtn===b) stopAll(); else startLoop(text,b); });
+  return b;
+}
+function wordCard(w){
+  const d = document.createElement('div'); d.className='word';
+  d.innerHTML = `<div class="emoji">${w.e||''}</div><div class="fr">${w.fr}</div><div class="say">${w.say}</div><div class="ar">${w.ar}</div>`;
+  d.appendChild(playBtn(w.fr));
+  if(w.alt){
+    const a = document.createElement('div'); a.className='word alt'; a.style.marginTop='8px'; a.style.width='100%';
+    a.innerHTML = `<div class="say">أو</div><div class="fr">${w.alt.fr}</div><div class="say">${w.alt.say}</div><div class="ar">${w.alt.ar}</div>`;
+    a.appendChild(playBtn(w.alt.fr));
+    d.appendChild(a);
+  }
+  return d;
+}
+function pairRow(p){
+  const r = document.createElement('div'); r.className='pair';
+  r.appendChild(wordCard(p[0]));
+  const vs = document.createElement('div'); vs.className='vs fr'; vs.textContent='#'; r.appendChild(vs);
+  r.appendChild(wordCard(p[1]));
+  return r;
+}
+const pairsEl = document.getElementById('pairs');
+PAIRS.forEach(p=>pairsEl.appendChild(pairRow(p)));
+document.getElementById('extraPair').appendChild(pairRow(EXTRA));
+function verbTable(el, rows, label){
+  rows.forEach(r=>{
+    const row = document.createElement('div'); row.className='row';
+    const fr = document.createElement('div'); fr.className='fr'; fr.innerHTML=r.fr;
+    const meta = document.createElement('div'); meta.className='meta';
+    meta.innerHTML = `<span class="ar">${r.ar}</span><span class="say">${r.say}</span>`;
+    row.appendChild(fr); row.appendChild(meta); row.appendChild(playBtn(r.speak));
+    el.appendChild(row);
+  });
+  const all = document.createElement('button'); all.className='playall'; all.type='button';
+  all.textContent = '▶️ اسمع الفعل كله ('+label+')';
+  all.addEventListener('click', ()=>{
+    if(!synth) return;
+    stopAll(); const id=playId;
+    let i=0; const btns=[...el.querySelectorAll('.play')];
+    const next=()=>{ if(id!==playId) return; if(i<rows.length){ const k=i++; sayOnce(rows[k].speak, id, btns[k], ()=>setTimeout(next,350)); } };
+    next();
+  });
+  el.appendChild(all);
+}
+verbTable(document.getElementById('etreTable'), ETRE, 'être');
+verbTable(document.getElementById('avoirTable'), AVOIR, 'avoir');
+function exTable(el, rows){
+  rows.forEach(r=>{
+    const row=document.createElement('div'); row.className='row';
+    row.innerHTML = `<div class="fr" style="font-size:1.1rem">${r.fr}</div><div class="meta"><span class="ar">${r.ar}</span></div>`;
+    row.appendChild(playBtn(r.fr)); el.appendChild(row);
+  });
+}
+exTable(document.getElementById('etreEx'), ETRE_EX);
+exTable(document.getElementById('avoirEx'), AVOIR_EX);
+document.querySelectorAll('nav.tabs button').forEach(b=>{
+  b.addEventListener('click', ()=>{
+    stopAll();
+    document.querySelectorAll('nav.tabs button').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
+    b.classList.add('active'); document.getElementById(b.dataset.tab).classList.add('active');
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
+});
+document.getElementById('normal').onclick=()=>{rate=0.9;document.getElementById('normal').classList.add('on');document.getElementById('slow').classList.remove('on');};
+document.getElementById('slow').onclick=()=>{rate=0.55;document.getElementById('slow').classList.add('on');document.getElementById('normal').classList.remove('on');};
+const shuffle = a => a.map(v=>[Math.random(),v]).sort((x,y)=>x[0]-y[0]).map(x=>x[1]);
+function buildQuestions(){
+  const opp = [...PAIRS.map(p=>[p[0].fr,p[1].fr]), ['bon','mauvais']];
+  const allOppWords = [...new Set(opp.flat())];
+  const qs = [];
+  shuffle(opp).slice(0,3).forEach(([a,b])=>{
+    const [w,ans] = Math.random()<.5?[a,b]:[b,a];
+    const wrong = shuffle(allOppWords.filter(x=>x!==w&&x!==ans)).slice(0,2);
+    qs.push({prompt:`إيه عكس <span class="fr">${w}</span>؟`, ans, opts:shuffle([ans,...wrong]), speak:ans});
+  });
+  const etreF=['suis','es','est','sommes','êtes','sont'], avoirF=['ai','as','a','avons','avez','ont'];
+  const verbQ = [
+    ['je ___','être','suis',etreF],['nous ___','être','sommes',etreF],['vous ___','être','êtes',etreF],
+    ['ils ___','être','sont',etreF],['tu ___','être','es',etreF],
+    ["j'___",'avoir','ai',avoirF],['nous ___','avoir','avons',avoirF],['vous ___','avoir','avez',avoirF],
+    ['elles ___','avoir','ont',avoirF],['il ___','avoir','a',avoirF],
+  ];
+  shuffle(verbQ).slice(0,4).forEach(([p,v,ans,forms])=>{
+    const wrong = shuffle(forms.filter(x=>x!==ans)).slice(0,2);
+    const full = p.replace('___',ans);
+    qs.push({prompt:`كمّل بفعل <span class="fr">${v}</span>:<br><span class="fr" style="font-size:1.4rem">${p}</span>`, ans, opts:shuffle([ans,...wrong]), speak:full});
+  });
+  return shuffle(qs);
+}
+let score=0, answered=0, total=0;
+function renderQuiz(){
+  const box=document.getElementById('quizBox'); box.innerHTML='';
+  const qs=buildQuestions(); score=0; answered=0; total=qs.length;
+  document.getElementById('score').textContent='';
+  qs.forEach(q=>{
+    const d=document.createElement('div'); d.className='q';
+    d.innerHTML=`<div class="prompt">${q.prompt}</div><div class="opts"></div><div class="fb"></div>`;
+    const opts=d.querySelector('.opts'), fb=d.querySelector('.fb');
+    let done=false;
+    q.opts.forEach(o=>{
+      const b=document.createElement('button'); b.type='button'; b.className='fr'; b.textContent=o;
+      b.onclick=()=>{
+        if(done) return; done=true; answered++;
+        if(o===q.ans){ b.classList.add('right'); fb.textContent='برافو! 🎉'; fb.style.color='var(--green)'; score++; }
+        else { b.classList.add('wrong'); fb.innerHTML='الإجابة الصح: <span class="fr">'+q.ans+'</span>'; fb.style.color='var(--red)';
+          [...opts.children].find(x=>x.textContent===q.ans).classList.add('right'); }
+        speak(q.speak, null);
+        if(answered===total) document.getElementById('score').textContent=`النتيجة: ${score} من ${total} ${score===total?'⭐️ ممتاز!':''}`;
+      };
+      opts.appendChild(b);
+    });
+    box.appendChild(d);
+  });
+}
+document.getElementById('again').onclick=()=>{renderQuiz();window.scrollTo({top:0,behavior:'smooth'});};
+renderQuiz();
+</script>
+</body>
+</html>
